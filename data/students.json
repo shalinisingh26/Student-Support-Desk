@@ -1,0 +1,65 @@
+{
+  "S1001": {
+    "name": "Aarav Shah",
+    "programme": "PGDM Big Data Analytics",
+    "email": "aarav.shah@example.edu",
+    "phone": "9000000001",
+    "elective": "Marketing Analytics",
+    "fee": {
+      "currency": "INR",
+      "total_fee": 250000,
+      "paid": 205000,
+      "outstanding": 45000,
+      "due_date": "2026-11-15",
+      "status": "Partially Paid"
+    },
+    "scholarship": {
+      "name": "Merit Scholarship",
+      "status": "Approved",
+      "amount": 30000
+    },
+    "pin_hash": "scrypt:32768:8:1$r9A4anY6MJ0GLCyA$85452c9ed58e2d006d4a0e7a6b655ea9f3b8f749f56d3e42d955d535df64b9bba7b244526a2f0ba7baf1a187b1330b60dbe3965bf3b6d0324ac9515fa03effb8"
+  },
+  "S1002": {
+    "name": "Meera Iyer",
+    "programme": "PGDM AI & Data Science",
+    "email": "meera.iyer@example.edu",
+    "phone": "9000000002",
+    "elective": "Computer Vision",
+    "fee": {
+      "currency": "INR",
+      "total_fee": 260000,
+      "paid": 180000,
+      "outstanding": 80000,
+      "due_date": "2026-11-10",
+      "status": "Partially Paid"
+    },
+    "scholarship": {
+      "name": "Need-based Scholarship",
+      "status": "Under Review",
+      "amount": 0
+    },
+    "pin_hash": "scrypt:32768:8:1$rQ6XMzZ05xAbvztk$d2fe54b268c0ee99f3024d7373f977d1bfe0acc44052380cf6fb2635033f06f127fd0c3c372cb63648489ceb5085c18a2184246179133e0bb4ac2e7c7fb9ca89"
+  },
+  "S1003": {
+    "name": "Rohan Das",
+    "programme": "PGDM Big Data Analytics",
+    "email": "rohan.das@example.edu",
+    "phone": "9000000003",
+    "elective": "Financial Analytics",
+    "fee": {
+      "currency": "INR",
+      "total_fee": 250000,
+      "paid": 250000,
+      "outstanding": 0,
+      "due_date": "2026-11-15",
+      "status": "Fully Paid"
+    },
+    "scholarship": {
+      "name": "None",
+      "status": "Not Applied",
+      "amount": 0
+    },
+    "pin_hash": "scrypt:32768:8:1$1jidKbnVoyCxxaJr$9162ee8aa3f798b5d2297587843843aa1aeb98174eb52817ad1d962d6666b4fb4d7b8c2a168b72f202bb3b70f80333f90bc1ecf32d767cc094fa2fe6b7431002"
+  }
+}

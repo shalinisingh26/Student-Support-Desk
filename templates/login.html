@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · {{ cfg.app_name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<main class="auth">
+  <!-- Left: brand panel (content comes from data/app_config.json) -->
+  <section class="auth-brand">
+    <div class="brand brand-light"><div class="logo logo-light">{{ logo_text }}</div>{{ cfg.app_name }}</div>
+
+    <div class="auth-hero">
+      <p class="eyebrow">{{ cfg.institute_name }}</p>
+      <h1>Your student office,<br>open around the clock.</h1>
+      <p class="lead">{{ cfg.tagline }}</p>
+
+      <ul class="features">
+        {% for item in cfg.login_highlights %}
+        <li>
+          <span class="feature-icon">
+            {% if loop.index == 1 %}
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            {% elif loop.index == 2 %}
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            {% else %}
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            {% endif %}
+          </span>
+          <div><strong>{{ item.title }}</strong><span>{{ item.text }}</span></div>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Illustrative chat preview -->
+      <div class="preview" aria-hidden="true">
+        <div class="pv-msg pv-user">{{ cfg.student_suggestions[0] }}</div>
+        <div class="pv-msg pv-bot"><span class="typing"><span></span><span></span><span></span></span></div>
+      </div>
+    </div>
+
+    <p class="auth-foot">Support hours: {{ cfg.support_hours }}</p>
+  </section>
+
+  <!-- Right: sign-in form -->
+  <section class="auth-form">
+    <div class="auth-card">
+      <h2>Welcome back</h2>
+      <p class="muted small" style="margin:6px 0 22px">Sign in to continue to {{ cfg.app_name }}.</p>
+
+      <div class="seg" role="tablist">
+        <button id="tab-student" class="active" type="button">Student</button>
+        <button id="tab-staff" type="button">Staff</button>
+      </div>
+
+      <div id="login-error" class="alert alert-bad hidden"></div>
+
+      <form id="student-form">
+        <label class="field"><span>Student ID</span><input class="input" name="student_id" placeholder="e.g. {{ cfg.student_id_example }}" autocomplete="username" required></label>
+        <label class="field"><span>PIN</span><input class="input" name="pin" type="password" autocomplete="current-password" required></label>
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        <p class="muted small center">Forgot your PIN? Contact the student office.</p>
+      </form>
+
+      <form id="staff-form" class="hidden">
+        <label class="field"><span>Username</span><input class="input" name="username" autocomplete="username" required></label>
+        <label class="field"><span>Password</span><input class="input" name="password" type="password" autocomplete="current-password" required></label>
+        <button class="btn btn-primary btn-block" type="submit">Sign in to staff console</button>
+        <p class="muted small center">For student office and administrative staff only.</p>
+      </form>
+
+      <div class="secure-note">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Sign-ins and record access are logged for your security.
+      </div>
+    </div>
+  </section>
+</main>
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

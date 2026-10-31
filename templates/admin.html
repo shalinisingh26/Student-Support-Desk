@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Console · {{ cfg.app_name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">{{ logo_text }}</div>{{ cfg.app_name }} <span class="muted small">Admin Console</span></div>
+  <div class="topbar-right"><button class="btn btn-sm" onclick="logout()">Sign out</button></div>
+</header>
+
+<main class="admin">
+  <nav class="tabs">
+    <button class="tab active" data-tab="assistant">Staff assistant</button>
+    <button class="tab" data-tab="approvals">Approvals <span class="badge hidden" id="pending-count"></span></button>
+    <button class="tab" data-tab="tickets">Support tickets <span class="badge hidden" id="open-count"></span></button>
+    <button class="tab" data-tab="students">Students</button>
+    <button class="tab" data-tab="audit">Audit log</button>
+    <button class="tab" data-tab="traces">Conversations</button>
+  </nav>
+
+  <!-- Staff assistant: role-scoped agent for staff questions -->
+  <section id="assistant">
+    <div class="section-head"><h2>Staff assistant</h2>
+      <button class="btn btn-sm" id="s-new">New conversation</button></div>
+    <div class="card staff-chat">
+      <div class="staff-log" id="s-log">
+        <div class="welcome" id="s-welcome">
+          <p class="muted">Ask about any student's record, the approvals queue, the audit log or institute policy.</p>
+          <div class="chips">{% for q in cfg.staff_suggestions %}<button class="chip">{{ q }}</button>{% endfor %}</div>
+        </div>
+      </div>
+      <form id="s-form" class="staff-composer">
+        <input class="input" id="s-msg" placeholder="Ask the staff assistant…" maxlength="1000">
+        <button class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Approvals: human-in-the-loop for sensitive record changes -->
+  <section id="approvals" class="hidden">
+    <div class="section-head">
+      <h2>Change requests</h2>
+      <div class="section-head-tools">
+        <select class="input" id="approval-filter" style="width:auto">
+          <option value="pending">Pending</option><option value="">All statuses</option>
+          <option value="approved">Approved</option><option value="rejected">Rejected</option>
+        </select>
+        <select class="input" id="approval-window" style="width:auto">
+          <option value="">Last {{ cfg.recent_window_hours }} hours</option>
+          <option value="all">Full history</option>
+        </select>
+      </div>
+    </div>
+    <p class="muted small range-note" id="approvals-range"></p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Request</th><th>Student</th><th>Field</th><th>Current → Requested</th><th>Requested</th><th>Status</th><th></th></tr></thead>
+      <tbody id="approvals-body"></tbody>
+    </table></div>
+  </section>
+
+  <!-- Support tickets -->
+  <section id="tickets" class="hidden">
+    <div class="section-head">
+      <h2>Support tickets</h2>
+      <div class="section-head-tools">
+        <select class="input" id="ticket-filter" style="width:auto">
+          <option value="">All statuses</option>
+        </select>
+        <select class="input" id="ticket-window" style="width:auto">
+          <option value="">Last {{ cfg.recent_window_hours }} hours</option>
+          <option value="all">Full history</option>
+        </select>
+        <button class="btn btn-sm" id="tickets-refresh">Refresh</button>
+      </div>
+    </div>
+    <p class="muted small range-note" id="tickets-range"></p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Ticket</th><th>Student</th><th>Category</th><th>Description</th><th>Raised</th><th>Status</th><th></th></tr></thead>
+      <tbody id="tickets-body"></tbody>
+    </table></div>
+  </section>
+
+  <!-- Students: roster and account creation -->
+  <section id="students" class="hidden">
+    <div class="section-head">
+      <h2>Students</h2>
+      <button class="btn btn-primary" id="new-student">Add student</button>
+    </div>
+
+    <form class="card hidden" id="student-form">
+      <h3 style="margin-bottom:14px">New student account</h3>
+      <div id="student-error" class="alert alert-bad hidden"></div>
+      <div class="form-grid">
+        <label class="field"><span>Student ID *</span>
+          <input class="input" name="student_id" id="f-sid" autocomplete="off"></label>
+        <label class="field"><span>Full name *</span><input class="input" name="name" autocomplete="off"></label>
+        <label class="field"><span>Programme</span><input class="input" name="programme" autocomplete="off"></label>
+        <label class="field"><span>Elective</span><input class="input" name="elective" autocomplete="off"></label>
+        <label class="field"><span>Email</span><input class="input" name="email" type="email" autocomplete="off"></label>
+        <label class="field"><span>Phone</span><input class="input" name="phone" autocomplete="off"></label>
+        <label class="field"><span>Sign-in PIN *</span>
+          <input class="input" name="pin" id="f-pin" inputmode="numeric" autocomplete="off"></label>
+        <label class="field"><span>Total fee</span><input class="input" name="total_fee" type="number" min="0" value="0"></label>
+        <label class="field"><span>Paid so far</span><input class="input" name="paid" type="number" min="0" value="0"></label>
+        <label class="field"><span>Fee due date</span><input class="input" name="due_date" type="date"></label>
+        <label class="field"><span>Fee status</span><select class="input" name="fee_status" id="f-fee-status"></select></label>
+        <label class="field"><span>Scholarship name</span><input class="input" name="scholarship_name" value="None"></label>
+        <label class="field"><span>Scholarship status</span><select class="input" name="scholarship_status" id="f-sch-status"></select></label>
+        <label class="field"><span>Scholarship amount</span><input class="input" name="scholarship_amount" type="number" min="0" value="0"></label>
+      </div>
+      <p class="muted small" id="pin-note"></p>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" type="submit">Create account</button>
+        <button class="btn" type="button" id="cancel-student">Cancel</button>
+      </div>
+    </form>
+
+    <div class="table-wrap" style="margin-top:16px"><table>
+      <thead><tr><th>Student ID</th><th>Name</th><th>Programme</th><th>Elective</th><th>Contact</th><th>Outstanding</th><th>Scholarship</th><th></th></tr></thead>
+      <tbody id="students-body"></tbody>
+    </table></div>
+  </section>
+
+  <!-- Audit log -->
+  <section id="audit" class="hidden">
+    <div class="section-head"><h2>Audit log</h2><button class="btn btn-sm" id="audit-refresh">Refresh</button></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Target</th><th>Decision</th><th>Result</th></tr></thead>
+      <tbody id="audit-body"></tbody>
+    </table></div>
+  </section>
+
+  <!-- Conversation traces -->
+  <section id="traces" class="hidden">
+    <div class="section-head">
+      <h2>Conversation traces</h2>
+      <select class="input" id="trace-agent" style="width:auto">
+        <option value="a2">Student portal (safe agent)</option><option value="staff">Staff assistant</option><option value="a1">Baseline agent</option>
+      </select>
+    </div>
+    <p class="muted small">One row per question. Click any row for the full evidence trail of that query:
+      context selected, every model call, each tool and its timing, what was retrieved, and why the run stopped.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Time</th><th>Student</th><th>Question</th><th>Model calls</th><th>Tools</th><th>Latency</th><th>Tokens in/out</th></tr></thead>
+      <tbody id="traces-body"></tbody>
+    </table></div>
+  </section>
+
+</main>
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

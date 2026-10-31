@@ -1,0 +1,79 @@
+{
+  "app_name": "Student Support Desk",
+  "institute_name": "PGDM Institute",
+  "tagline": "Fees, scholarships, course changes and support — answered in seconds.",
+  "support_hours": "Mon–Fri, 9:00 AM – 6:00 PM",
+  "login_highlights": [
+    {
+      "title": "Instant answers",
+      "text": "Fee status, scholarship updates and institute policies, any time."
+    },
+    {
+      "title": "Private by design",
+      "text": "You only ever see your own record. Every access is logged."
+    },
+    {
+      "title": "Staff-approved changes",
+      "text": "Updates to your details are applied only after the Records Office approves them."
+    }
+  ],
+  "support_categories": [
+    "fees",
+    "scholarship",
+    "academics",
+    "id_card",
+    "it_access",
+    "general"
+  ],
+  "ticket_statuses": [
+    "Open",
+    "In Progress",
+    "Resolved"
+  ],
+  "recent_window_hours": 24,
+  "currency": "INR",
+  "fee_statuses": [
+    "Unpaid",
+    "Partially Paid",
+    "Fully Paid"
+  ],
+  "scholarship_statuses": [
+    "Not Applied",
+    "Under Review",
+    "Approved",
+    "Rejected"
+  ],
+  "min_pin_length": 4,
+  "_comment_out_of_scope": "Edit this sentence to widen or narrow what the student assistant will answer. It is injected into the system prompt, so no code change is needed. For a strict desk, replace it with: 'If the question is not about student support, politely say it is outside what you can help with.'",
+  "out_of_scope_policy": "If the student asks something outside student support (general knowledge, coding, maths, writing help), answer it directly and briefly, then mention you can also help with fees, scholarships, course changes and support requests. Do not refuse a question merely because it is off-topic.",
+  "profile_fields": [
+    "name",
+    "programme",
+    "elective",
+    "email",
+    "phone"
+  ],
+  "changeable_fields": [
+    "phone",
+    "email",
+    "elective",
+    "programme"
+  ],
+  "student_suggestions": [
+    "What programme and elective am I enrolled in?",
+    "What is my current fee status?",
+    "What is my scholarship status?",
+    "The payment portal failed. Can I pay on the next working day?",
+    "Can I change my elective?",
+    "I want to update my phone number"
+  ],
+  "staff_suggestions": [
+    "How many change requests are pending?",
+    "Show the fee status of S1002",
+    "How many support tickets are open?",
+    "Were there any blocked access attempts?",
+    "Summarise the late fee rules"
+  ],
+  "student_id_pattern": "^S\\d{4}$",
+  "student_id_example": "S1001"
+}

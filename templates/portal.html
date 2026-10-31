@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ cfg.app_name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">{{ logo_text }}</div>{{ cfg.app_name }}</div>
+  <div class="topbar-right">
+    <span class="who muted small" id="who"></span>
+    <button class="btn btn-sm" id="new-chat">New conversation</button>
+    <button class="btn btn-sm" onclick="logout()">Sign out</button>
+  </div>
+</header>
+
+<div class="portal">
+  <aside class="sidebar">
+    <div class="card">
+      <h3>My profile</h3>
+      <div id="profile"><span class="muted small">Loading…</span></div>
+    </div>
+
+    <div class="card hidden" id="notif-card">
+      <h3>Messages from the office <span class="badge hidden" id="notif-unread"></span></h3>
+      <div id="notifications"></div>
+    </div>
+
+    <div class="card">
+      <h3>Fee summary</h3>
+      <div id="fee"><span class="muted small">Loading…</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Scholarship</h3>
+      <div id="scholarship"><span class="muted small">Loading…</span></div>
+    </div>
+
+    <div class="card">
+      <h3>My change requests</h3>
+      <div id="requests"><span class="muted small">Loading…</span></div>
+    </div>
+
+    <div class="card">
+      <h3>My support tickets</h3>
+      <div id="tickets"><span class="muted small">Loading…</span></div>
+    </div>
+  </aside>
+
+  <section class="chat">
+    <div class="chat-scroll" id="chat-scroll">
+      <div class="chat-inner" id="chat">
+        <div class="welcome" id="welcome">
+          <h2 id="greeting">How can we help today?</h2>
+          <p class="muted">Ask about your fees, scholarship, course changes or institute policies.</p>
+          <div class="stat-row" id="glance"></div>
+          <div class="chips">
+            {% for q in cfg.student_suggestions %}<button class="chip">{{ q }}</button>{% endfor %}
+          </div>
+          <p class="muted small support-hours">Support desk: {{ cfg.support_hours }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="composer">
+      <form id="composer">
+        <textarea id="message" placeholder="Type your question…" maxlength="1000" rows="1"></textarea>
+        <button class="btn btn-primary" type="submit" id="send">Send</button>
+      </form>
+      <div class="hint">Never share passwords or OTPs here. Changes to your details are applied only after staff approval.</div>
+    </div>
+  </section>
+</div>
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/portal.js') }}"></script>
+</body>
+</html>

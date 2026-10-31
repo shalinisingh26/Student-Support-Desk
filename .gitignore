@@ -1,0 +1,26 @@
+
+# Secrets — never commit these
+.env
+.env.*
+!.env.example
+
+# Local environment
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Runtime data written by the app
+runtime/
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Test and cache files
+.pytest_cache/
+.coverage
